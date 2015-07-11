@@ -12,6 +12,7 @@ class Patient<O> {
 
 class String<O> {
 }
+
 class Prescription<O> {	
 	function getPrescription() : [?][O] String
 	{
@@ -92,14 +93,14 @@ class Client<world>
 		mRecord = Alice.getMedicalHistory();
 		patientHistory = mRecord.getPatientHistory();
 		
-		Alice <<read>> mRecord;
-		Alice <<modify>> mRecord;
+		Alice <<read>> mRecord;					// Object Alice is trying to read object mRecord
+		Alice <<modify>> mRecord;				// Object Alice trying to modify object mRecord
 		Alice <<read>> patientHistory;
-		Bob <<read>> mRecord; 							//Error
+		Bob <<read>> mRecord; 					//Error
 		Bob <<modify>> mRecord; 				//Error
 		
 		mRecord = @policy(beta) Alice.getMedicalHistory();
-		Bob <<read>> mRecord; 							//Ok
+		Bob <<read>> mRecord; 					//Ok
 		Bob <<modify>> mRecord; 				//Error
 		
 		@policy(gamma)
