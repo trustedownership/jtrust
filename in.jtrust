@@ -1,0 +1,112 @@
+package pack1;
+
+class Patient<O> {
+	
+	@policy(pi)
+	function getMedicalHistory() : [?][O] String
+	{		
+	    object ecgRecord : [?][this]mHealthDevice<this>;
+		return declassify<pi> ecgRecord.getHistory();
+	}
+}
+
+class String<O> {
+}
+class Prescription<O> {	
+	function getPrescription() : [?][O] String
+	{
+		//..code to return prescription values.
+	}
+	function setPrescription(value : String) : [?][O] String
+	{
+		//..code to persist.
+	}
+}
+
+class Doctor<O> {
+	
+	function analyse(history : MedicalRecord) : [?][O] String
+	{
+		//..code to analyse.
+	}
+	
+	function changePrescription(prescription : Prescription) : [?][O] String
+	{
+		//..code to prescribe new medicine
+	}
+}
+
+class Snooper<O> {
+	
+	function trackMedicalHistory(history : String) : [?][O] String
+	{
+		//..track medical history - maliciously
+	}
+	function changePresctiption(prescription : Prescription) : [?][O] String
+	{
+		//..code to change prescription maliciously
+	}
+}
+
+class MedicalRecord<O> {
+	
+	function getPatientHistory() : [?][O] String
+	{
+		object patientHistory : String<this>;
+		return declassify patientHistory;
+	}
+}
+
+class mHealthDevice<Q> {
+	
+	function getHistory() : [?][Q] MedicalRecord
+	{
+		object history : MedicalRecord<this>;
+		return declassify history;
+	}
+}
+
+policy alpha {}
+
+policy beta {
+	@read:
+	Alice neighbours Bob;
+}
+
+policy gamma {
+	@mutable:
+	Alice neighbours Bob;
+}
+
+class Client<world>
+{			
+	function main(args : Array(String)) : _
+	{		
+		@policy(alpha)
+		object Alice : [?][this]Patient<world>;		
+		object Bob : Doctor<world>;
+		object Eve : Snooper<world>;
+		object mRecord : [?][this] MedicalRecord;		
+		object patientHistory : String<this>;
+		
+		mRecord = Alice.getMedicalHistory();
+		patientHistory = mRecord.getPatientHistory();
+		
+		Alice <<read>> mRecord;
+		Alice <<modify>> mRecord;
+		Alice <<read>> patientHistory;
+		Bob <<read>> mRecord; 							//Error
+		Bob <<modify>> mRecord; 				//Error
+		
+		mRecord = @policy(beta) Alice.getMedicalHistory();
+		Bob <<read>> mRecord; 							//Ok
+		Bob <<modify>> mRecord; 				//Error
+		
+		@policy(gamma)
+		object Alice;
+		
+		Bob <<modify>> mRecord; 				//Ok
+		Eve <<read>> mRecord; 						//Error
+		Eve <<modify>> mRecord; 						//Error
+	}
+}
