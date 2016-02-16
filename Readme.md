@@ -6,7 +6,7 @@
 ##Example:
 	>> java -jar jtrust(v1.0) in.jtrust Client
 	
-##Story:
+##Story (explaining 'in.jtrust'):
 	Let me describe the program context and what we will achieve at the end of the program.
 	
 	> Characters:
