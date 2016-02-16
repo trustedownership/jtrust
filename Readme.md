@@ -36,5 +36,6 @@
 		- Sometime, Bob additionally require modify permission in order to update her record in certain cases, like prescribing prescription etc,.
 		- If Alice likes to enable 'modify' permission to Bob, she can change her policy to 'gamma' (line 106,107).
 		- Now, after modifying the policy level to 'gamma', Bob can modify.
-		- However, Eve (the snooper), cannot access (read/modify) Alice's private, sensitive information shared to Bob in the open world.
+		- However, Eve (the snooper), cannot access (read/modify) Alice's private, sensitive information shared to Bob in the open world. 
+		- ("Success - Happy Ending")
 		- The End.
