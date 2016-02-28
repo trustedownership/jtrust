@@ -1,3 +1,5 @@
+#JTrust - Trusted Ownership with Declassification.
+
 #How to run JTrust?
 
 ##From Jar:
