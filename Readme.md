@@ -1,6 +1,6 @@
 #JTrust - Trusted Ownership with Declassification.
 
-#How to run JTrust?
+##How to run JTrust?
 
 ##From Jar:
 	>> java -jar jtrust(v1.0) <input_file> <main_class>
